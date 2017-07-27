@@ -28,6 +28,7 @@
 #define EPWM8_MID_CMP      62500*0.925
 #define EPWM8_LOW_CMP      62500*0.95
 #define EPWM8_HIG_CMP      62500*0.9
+#define EPWM8_MID_ESC      62500*0.075
 //
 // Defines ADC
 //
@@ -68,6 +69,7 @@ EPWM_INFO epwm7_info,epwm8_info;
 
 uint16_t    EPwm1TimerIntCount = 0;
 char msg_rec[10];
+
 //
 //  Globals State Machine
 //
@@ -161,7 +163,7 @@ void main(void)
 // These functions are in the F2837xS_EPwm.c file
 //
    InitEPwm7Gpio(); // for motion motor
-   InitEPwm8Gpio(); // for suction motor
+   InitEPwm8Gpio(); // for suction motor and servo motor
 
 //
 // For this example, only init the pins for the SCI-A port.
@@ -231,8 +233,8 @@ void main(void)
    CpuSysRegs.PCLKCR0.bit.TBCLKSYNC = 0; // ePWM Time Base Clock sync: When set PWM time bases of all the PWM modules start counting
    EDIS;
 
-   InitEPwm7Example();
-   InitEPwm8Example();
+   InitEPwm7Example(); // for motion motor
+   InitEPwm8Example(); // for suction motor and sevor
 
    EALLOW;
    CpuSysRegs.PCLKCR0.bit.TBCLKSYNC = 1;
@@ -351,6 +353,9 @@ void main(void)
    scic_msg(msg);
    DELAY_US(1000); //µÈ´ýÎ¢Ãî
 
+   msg = "AT+CIFSR\r\n\0";
+   scic_msg(msg);
+
 //   msg = "a\r\n";
 
    //
@@ -375,7 +380,7 @@ void main(void)
     	   //scib_xmit(epwm7_info.EPwmCMPA);
        }
        //scib_msg(msg);
-       //ÍøÂçÍ¨ÐÅ
+       //´¦ÀíÍøÂçÍ¨ÐÅ processing network data
        while(ScicRegs.SCIFFRX.bit.RXFFST != 0)
        {
     	   ReceivedCharc = ScicRegs.SCIRXBUF.bit.SAR;
@@ -421,9 +426,10 @@ void main(void)
 
        }
 
+       //Setting the State Machine
        if(msg_state == 1)
        {
-    	   scib_msg(msg_rec);//DebugÓï¾ä
+    	   scib_msg(msg_rec);//for Debug
     	   msg_state = 0;
     	   //epwm7_info.EPwmCMPA = EPWM3_TIMER_TBPRD * (((float)msg_rec[5])/10);
     	   //epwm7_info.EPwmCMPB = EPWM3_TIMER_TBPRD * (((float)msg_rec[5])/10);
@@ -462,7 +468,7 @@ void main(void)
        //
        //software breakpoint, hit run again to get updated conversions
        //
-       asm("   ESTOP0");
+       //asm("   ESTOP0");
    }
 
 }
@@ -737,7 +743,7 @@ void InitEPwm8Example()
 	   // Set Compare values
 	   //
 	   EPwm8Regs.CMPA.bit.CMPA = EPWM8_MID_CMP;      // Set compare A value
-	   EPwm8Regs.CMPB.bit.CMPB = EPWM8_MID_CMP;      // Set Compare B value
+	   EPwm8Regs.CMPB.bit.CMPB = EPWM8_MID_ESC;      // Set Compare B value
 
 	   //
 	   // Set actions
@@ -764,7 +770,7 @@ void InitEPwm8Example()
 	   // a pointer to the correct ePWM registers
 	   //
 	   epwm8_info.EPwm_CMPA_Direction = EPWM_CMP_UP;   // Start by increasing CMPA
-	   epwm8_info.EPwm_CMPB_Direction = EPWM_CMP_DOWN; // and decreasing CMPB
+	   epwm8_info.EPwm_CMPB_Direction = EPWM_CMP_UP; // and decreasing CMPB
 	   //epwm8_info.EPwmTimerIntCount = 0;               // Zero the interrupt
 	                                                   // counter
 	   epwm8_info.EPwmRegHandle = &EPwm8Regs;          // Set the pointer to the
@@ -772,7 +778,7 @@ void InitEPwm8Example()
 	   //epwm2_info.EPwmMaxCMPA = EPWM2_MAX_CMPA;        // Setup min/max
 	                                                   // CMPA/CMPB values
 	   epwm8_info.EPwmCMPA = EPWM8_MID_CMP;
-	   epwm8_info.EPwmCMPB = EPWM8_MID_CMP;
+	   epwm8_info.EPwmCMPB = EPWM8_MID_ESC;
 	   epwm8_info.EPwmSpeed = 0.5;
 }
 
@@ -866,6 +872,17 @@ void state_machine_processing()
 			break;
 		}
 		break;
+	case 1:
+		switch(operator)
+		{
+		case 0x00://stop
+			epwm8_info.EPwmCMPB = EPWM8_MID_ESC;
+			break;
+		case 0x01://start
+			epwm8_info.EPwmCMPB = EPWM8_MID_ESC + 500 * epwm8_info.EPwmSpeed;
+			break;
+		}
+		break;
 	case 4://servo
 		switch(operator % 3)
 		{
@@ -895,7 +912,11 @@ void state_machine_processing()
 			state = 0;
 			operator = 0;
 			break;
-		case 2://Îü³¾Æ÷
+		case 2://suction
+			epwm8_info.EPwmSpeed = msg_rec[3];
+			epwm8_info.EPwmSpeed = 1 - epwm8_info.EPwmSpeed/100;
+			state = 0;
+			operator = 0;
 			break;
 		}
 		break;
