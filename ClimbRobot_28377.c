@@ -15,6 +15,7 @@
 //
 // Defines ePWM
 //
+// for motion driver
 #define EPWM3_TIMER_TBPRD  3125  // Period register
 #define EPWM3_MAX_CMPA     3125*0.5
 #define EPWM3_MIN_CMPA     3125*0.5
@@ -23,7 +24,7 @@
 
 #define EPWM_CMP_UP           1
 #define EPWM_CMP_DOWN         0
-
+// for suction ESC and servo
 #define EPWM8_TIMER_TBPRD  62500  // Period register
 #define EPWM8_MID_CMP      62500*0.925
 #define EPWM8_LOW_CMP      62500*0.95
@@ -221,7 +222,6 @@ void main(void)
 //
    EALLOW; // This is needed to write to EALLOW protected registers
    PieVectTable.EPWM7_INT = &epwm7_isr;
-   //PieVectTable.EPWM7_INT = &epwm8_isr;
    PieVectTable.ADCA1_INT = &adca1_isr; //function for ADCA interrupt 1
    PieVectTable.XINT1_INT = &xint1_isr;  //Õ‚≤ø÷–∂œ
    EDIS;   // This is needed to disable write to EALLOW protected registers
@@ -288,7 +288,6 @@ void main(void)
 // Enable EPWM INTn in the PIE: Group 3 interrupt 1-3
 //
    PieCtrlRegs.PIEIER3.bit.INTx7 = 1;
-   //PieCtrlRegs.PIEIER3.bit.INTx8 = 1;
    PieCtrlRegs.PIECTRL.bit.ENPIE = 1;          // Enable the PIE block
    PieCtrlRegs.PIEIER1.bit.INTx4 = 1;          // Enable PIE Group 1 INT4
 
@@ -431,8 +430,6 @@ void main(void)
        {
     	   scib_msg(msg_rec);//for Debug
     	   msg_state = 0;
-    	   //epwm7_info.EPwmCMPA = EPWM3_TIMER_TBPRD * (((float)msg_rec[5])/10);
-    	   //epwm7_info.EPwmCMPB = EPWM3_TIMER_TBPRD * (((float)msg_rec[5])/10);
     	   state = msg_rec[1];
     	   operator = msg_rec[2];
        }
@@ -647,6 +644,7 @@ void scic_fifo_init()
 
 //
 // InitEPwm7Example - Initialize EPWM7 values
+// for motion motor
 //
 void InitEPwm7Example()
 {
@@ -872,7 +870,7 @@ void state_machine_processing()
 			break;
 		}
 		break;
-	case 1:
+	case 1://suction motor
 		switch(operator)
 		{
 		case 0x00://stop
@@ -920,23 +918,13 @@ void state_machine_processing()
 			break;
 		}
 		break;
-		/*
-	case 4://
+	/*
+	case 6://LED
 		switch(operator)
 		{
-		case 1://servo middle position
-			break;
-		case 2://servo high position
-			break;
-		case 3://servo low position
-			break;
-		case 4://LED turn on
-			break;
-		case 5://LED turn off
-			break;
 		}
 		break;
-		*/
+	*/
 	}
 	return;
 }
