@@ -21,10 +21,10 @@ ORDERED_OBJS += \
 "./F2837xS_PieVect.obj" \
 "./F2837xS_SysCtrl.obj" \
 "./F2837xS_usDelay.obj" \
+"../2837xS_Generic_FLASH_lnk.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 -lF2837xS_Headers_nonBIOS.cmd \
--l2837xS_Generic_RAM_lnk.cmd \
 -lrts2800_fpu32.lib \
 
 -include ../makefile.init
@@ -151,7 +151,7 @@ all: ClimbRobot.out
 ClimbRobot.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: C2000 Linker'
-	"C:/ti/ccsv6/tools/compiler/c2000_15.12.3.LTS/bin/cl2000" -v28 -ml -mt -g --define=CPU1 --display_error_number --diag_warning=225 --diag_wrap=off -z -m"ClimbRobot.map" --warn_sections -i"C:/ti/ccsv6/tools/compiler/c2000_15.12.3.LTS/lib" -i"C:/ti/controlSUITE/device_support/F2837xS/v210/F2837xS_headers/cmd" -i"C:/ti/controlSUITE/device_support/F2837xS/v210/F2837xS_common/cmd" -i"C:/ti/ccsv6/tools/compiler/c2000_15.12.3.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="ClimbRobot_linkInfo.xml" --entry_point=code_start --rom_model -o "ClimbRobot.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv6/tools/compiler/c2000_15.12.3.LTS/bin/cl2000" -v28 -ml -mt --advice:performance=all -g --define=CPU1 --display_error_number --diag_warning=225 --diag_wrap=off -z -m"ClimbRobot.map" --warn_sections -i"C:/ti/ccsv6/tools/compiler/c2000_15.12.3.LTS/lib" -i"C:/ti/controlSUITE/device_support/F2837xS/v210/F2837xS_headers/cmd" -i"C:/ti/controlSUITE/device_support/F2837xS/v210/F2837xS_common/cmd" -i"C:/ti/ccsv6/tools/compiler/c2000_15.12.3.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="ClimbRobot_linkInfo.xml" --entry_point=code_start --rom_model -o "ClimbRobot.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

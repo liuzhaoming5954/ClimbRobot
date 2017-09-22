@@ -3,6 +3,9 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+CMD_SRCS += \
+../2837xS_Generic_FLASH_lnk.cmd 
+
 ASM_SRCS += \
 ../F2837xS_CodeStartBranch.asm \
 ../F2837xS_usDelay.asm 
