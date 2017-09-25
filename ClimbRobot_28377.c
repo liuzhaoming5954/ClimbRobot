@@ -27,8 +27,8 @@
 // for suction ESC and servo
 #define EPWM8_TIMER_TBPRD  62500  // Period register
 #define EPWM8_MID_CMP      62500*0.925
-#define EPWM8_LOW_CMP      62500*0.95
-#define EPWM8_HIG_CMP      62500*0.9
+#define EPWM8_LOW_CMP      62500*0.94
+#define EPWM8_HIG_CMP      62500*0.91
 #define EPWM8_MID_ESC      62500*0.95 // 1ms 0.9--2ms
 //
 // Defines ADC
