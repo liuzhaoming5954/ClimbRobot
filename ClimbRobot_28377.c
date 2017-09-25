@@ -145,18 +145,25 @@ void main(void)
 	msg_i = 0;
 	float PressureValue = 0;
 
+
 //
 // Step 1. Initialize System Control:
 // PLL, WatchDog, enable Peripheral Clocks
 // This example function is found in the F2837xS_SysCtrl.c file.
 //
    InitSysCtrl();
+
+   DELAY_US(1000000); //等待微妙
 //
 // Step 2. Initialize GPIO:
 // This example function is found in the F2837xS_Gpio.c file and
 // illustrates how to set the GPIO to it's default state.
 //
+
+
+
   InitGpio();
+
 
 //
 // Enable PWM7 PWM 的时钟寄存器
@@ -172,6 +179,8 @@ void main(void)
    InitEPwm7Gpio(); // for motion motor
    InitEPwm8Gpio(); // for suction motor and servo motor
    //InitEPwm9Gpio(); // for suction motor
+
+
 
 //
 // For this example, only init the pins for the SCI-A port.
@@ -348,22 +357,28 @@ void main(void)
    scic_echoback_init();
 
    msg = "\r\n\n\nHello World!\0"; // \0 for denote the end of string
-   scib_msg(msg);
-   // Connect to the Router
-   msg = "AT+CWJAP=\"Robotics Lab 518a\",\"ccny10031\"\r\n\0";
+   //scib_msg(msg);
    scic_msg(msg);
+   // Connect to the Router
+
+   msg = "AT+CWJAP=\"Robotics Lab 518a\",\"ccny10031\"\r\n\0";
+   //scic_msg(msg);
+   scib_msg(msg);
    DELAY_US(5000000); //等待微妙
 
    msg = "AT+CIPMUX=1\r\n\0";
-   scic_msg(msg);
-   DELAY_US(1000); //等待微妙
+   //scic_msg(msg);
+   scib_msg(msg);
+   DELAY_US(100000); //等待微妙
 
    msg = "AT+CIPSERVER=1,8888\r\n\0";
-   scic_msg(msg);
-   DELAY_US(1000); //等待微妙
+   //scic_msg(msg);
+   scib_msg(msg);
+   DELAY_US(100000); //等待微妙
 
    msg = "AT+CIFSR\r\n\0";
-   scic_msg(msg);
+   //scic_msg(msg);
+   scib_msg(msg);
 
 //   msg = "a\r\n";
 
@@ -380,20 +395,26 @@ void main(void)
        // Wait for inc character
        //
 	   //与电脑的连接，Debug专用  for debug receive from computer(com monitor)
-       while(ScibRegs.SCIFFRX.bit.RXFFST != 0)
+       //while(ScibRegs.SCIFFRX.bit.RXFFST != 0)
+       while(ScicRegs.SCIFFRX.bit.RXFFST != 0)
        {
-           ReceivedCharb = ScibRegs.SCIRXBUF.bit.SAR;
-           scic_xmit(ReceivedCharb);
+           //ReceivedCharb = ScibRegs.SCIRXBUF.bit.SAR;
+    	   ReceivedCharb = ScicRegs.SCIRXBUF.bit.SAR;
+           //scic_xmit(ReceivedCharb);
+           scib_xmit(ReceivedCharb);
            //epwm7_info.EPwmCMPA = EPWM3_TIMER_TBPRD * ((float)ReceivedCharb/10);
     	   //epwm7_info.EPwmMinCMPA = EPWM3_MIN_CMPA*(1-ReceivedCharc/10);
     	   //scib_xmit(epwm7_info.EPwmCMPA);
        }
        //scib_msg(msg);
        //处理网络通信  processing network data
-       while(ScicRegs.SCIFFRX.bit.RXFFST != 0)
+       //while(ScicRegs.SCIFFRX.bit.RXFFST != 0)
+       while(ScibRegs.SCIFFRX.bit.RXFFST != 0)
        {
-    	   ReceivedCharc = ScicRegs.SCIRXBUF.bit.SAR;
-           scib_xmit(ReceivedCharc); // for debug, display on computer(com monitor)
+    	   //ReceivedCharc = ScicRegs.SCIRXBUF.bit.SAR;
+    	   ReceivedCharc = ScibRegs.SCIRXBUF.bit.SAR;
+           //scib_xmit(ReceivedCharc); // for debug, display on computer(com monitor)
+           scic_xmit(ReceivedCharc); // for debug, display on computer(com monitor)
            switch(ReceivedCharc)
            {
            case 0xFF:
@@ -439,7 +460,8 @@ void main(void)
        //Setting the State Machine
        if(msg_state == 1)
        {
-    	   scib_msg(msg_rec);//for Debug
+    	   //scib_msg(msg_rec);//for Debug
+    	   scic_msg(msg_rec);//for Debug
     	   msg_state = 0;
     	   state = msg_rec[1];
     	   operator = msg_rec[2];
