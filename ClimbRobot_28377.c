@@ -153,7 +153,7 @@ void main(void)
 //
    InitSysCtrl();
 
-   DELAY_US(1000000); //µÈ´ýÎ¢Ãî
+   DELAY_US(1000000); //µÈ´ýÎ¢Ãî  wait
 //
 // Step 2. Initialize GPIO:
 // This example function is found in the F2837xS_Gpio.c file and
@@ -350,10 +350,10 @@ void main(void)
 //   scia_fifo_init();       // Initialize the SCI FIFO
 //   scia_echoback_init();   // Initialize SCI for echoback
 
-   scib_fifo_init();
+   scib_fifo_init();  // for communication of ESP
    scib_echoback_init();
 
-   scic_fifo_init();
+   scic_fifo_init();  // for debug
    scic_echoback_init();
 
    msg = "\r\n\n\nHello World!\0"; // \0 for denote the end of string
@@ -361,7 +361,7 @@ void main(void)
    scic_msg(msg);
    // Connect to the Router
 
-   msg = "AT+CWJAP=\"Robotics Lab 518a\",\"ccny10031\"\r\n\0";
+   msg = "AT+CWJAP=\"Robotics Lab 518a\",\"ccny10031\"\r\n\0"; // if you change a router, then change the name and password
    //scic_msg(msg);
    scib_msg(msg);
    DELAY_US(5000000); //µÈ´ýÎ¢Ãî
@@ -1071,13 +1071,13 @@ void state_machine_processing()
 	case 5://setting speed
 		switch(operator)
 		{
-		case 1://ÂÖ×Ó
+		case 1://wheel speed
 			epwm7_info.EPwmSpeed = msg_rec[3];
 			epwm7_info.EPwmSpeed = 1 - epwm7_info.EPwmSpeed/100;
 			state = 0;
 			operator = 0;
 			break;
-		case 2://suction
+		case 2://suction speed
 			epwm8_info.EPwmSpeed = msg_rec[3];
 			epwm8_info.EPwmSpeed = epwm8_info.EPwmSpeed/100;
 			epwm8_info.EPwmCMPA = 62500 * (0.95-0.05 * epwm8_info.EPwmSpeed);
