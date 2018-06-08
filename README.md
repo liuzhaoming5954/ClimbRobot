@@ -1,7 +1,6 @@
 # ClimbRobot
 Climbing Robot DPS code
-We use the chip ESP8266 to connect the DSP with WIFI    
-[ESP8266](https://en.wikipedia.org/wiki/ESP8266)    
+We use the chip ESP8266 to connect the DSP with WIFI [ESP8266](https://en.wikipedia.org/wiki/ESP8266)    
 When you have a new ESP8266, you should configure it at first with **AT commands**.  
 [AT commands set](https://www.espressif.com/sites/default/files/documentation/4a-esp8266_at_instruction_set_en.pdf)     
 Firstly, you need a serial port debugging tool to configure, like this [one](https://github.com/Neutree/COMTool/releases).
