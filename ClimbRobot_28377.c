@@ -1,7 +1,7 @@
 /*
  * ClimbRobot_28377.c
  *
- *  Created on: 2017Äê7ÔÂ21ÈÕ
+ *  Created on: 2017å¹´7æœˆ21æ—¥
  *      Author: Liuzhaoming
  */
 
@@ -62,9 +62,9 @@ typedef struct
     volatile struct EPWM_REGS *EPwmRegHandle;
     Uint16 EPwm_CMPA_Direction;
     Uint16 EPwm_CMPB_Direction;
-    Uint16 EPwmCMPA; //ÓÃÓÚ¸ø¶¨ËÙ¶È
-    Uint16 EPwmCMPB; //ÓÃÓÚ¸ø¶¨ËÙ¶È
-    float EPwmSpeed; //ÓÃÓÚ¸ø¶¨ËÙ¶È
+    Uint16 EPwmCMPA; //for giving the speed
+    Uint16 EPwmCMPB; //for giving the speed
+    float EPwmSpeed; //for giving the speed
 }EPWM_INFO;
 EPWM_INFO epwm7_info,epwm8_info,epwm9_info;
 
@@ -153,7 +153,7 @@ void main(void)
 //
    InitSysCtrl();
 
-   DELAY_US(1000000); //µÈ´ıÎ¢Ãî  wait
+   DELAY_US(1000000); //ç­‰å¾…å¾®å¦™  wait some microseconds
 //
 // Step 2. Initialize GPIO:
 // This example function is found in the F2837xS_Gpio.c file and
@@ -166,7 +166,7 @@ void main(void)
 
 
 //
-// Enable PWM7 PWM µÄÊ±ÖÓ¼Ä´æÆ÷
+// Enable PWM7 PWM çš„æ—¶é’Ÿå¯„å­˜å™¨ clock register for PWM 
 //
    CpuSysRegs.PCLKCR2.bit.EPWM7 = 1;
    CpuSysRegs.PCLKCR2.bit.EPWM8 = 1;
@@ -239,7 +239,7 @@ void main(void)
    EALLOW; // This is needed to write to EALLOW protected registers
    PieVectTable.EPWM7_INT = &epwm7_isr;
    PieVectTable.ADCA1_INT = &adca1_isr; //function for ADCA interrupt 1
-   PieVectTable.XINT1_INT = &xint1_isr;  //Íâ²¿ÖĞ¶Ï
+   PieVectTable.XINT1_INT = &xint1_isr;  //å¤–éƒ¨ä¸­æ–­ external interruption 
    EDIS;   // This is needed to disable write to EALLOW protected registers
 
 //
@@ -277,7 +277,7 @@ void main(void)
 //
 // Enable CPU INT3 which is connected to EPWM1-3 INT:
 //
-   IER |= M_INT1;                              // Íâ²¿ÖĞ¶Ï
+   IER |= M_INT1;                              // å¤–éƒ¨ä¸­æ–­ external interruption 
    IER |= M_INT3;
    //IER |= M_INT5;
 
@@ -359,22 +359,22 @@ void main(void)
    msg = "\r\n\n\nHello World!\0"; // \0 for denote the end of string
    //scib_msg(msg);
    scic_msg(msg);
+   //These code for ESP8266	
    // Connect to the Router
-
    msg = "AT+CWJAP=\"Robotics Lab 518a\",\"ccny10031\"\r\n\0"; // if you change a router, then change the name and password
    //scic_msg(msg);
    scib_msg(msg);
-   DELAY_US(5000000); //µÈ´ıÎ¢Ãî
+   DELAY_US(5000000); //ç­‰å¾…å¾®å¦™ wait for some microseconds
 
    msg = "AT+CIPMUX=1\r\n\0";
    //scic_msg(msg);
    scib_msg(msg);
-   DELAY_US(100000); //µÈ´ıÎ¢Ãî
+   DELAY_US(100000); //ç­‰å¾…å¾®å¦™ wait for some microseconds
 
    msg = "AT+CIPSERVER=1,8888\r\n\0";
    //scic_msg(msg);
    scib_msg(msg);
-   DELAY_US(100000); //µÈ´ıÎ¢Ãî
+   DELAY_US(100000); //ç­‰å¾…å¾®å¦™ wait for some microseconds
 
    msg = "AT+CIFSR\r\n\0";
    //scic_msg(msg);
@@ -394,7 +394,7 @@ void main(void)
        //
        // Wait for inc character
        //
-	   //ÓëµçÄÔµÄÁ¬½Ó£¬Debug×¨ÓÃ  for debug receive from computer(com monitor)
+	   //ä¸ç”µè„‘çš„è¿æ¥ï¼ŒDebugä¸“ç”¨  for debug receive from computer(com monitor)
        //while(ScibRegs.SCIFFRX.bit.RXFFST != 0)
        while(ScicRegs.SCIFFRX.bit.RXFFST != 0)
        {
@@ -407,7 +407,7 @@ void main(void)
     	   //scib_xmit(epwm7_info.EPwmCMPA);
        }
        //scib_msg(msg);
-       //´¦ÀíÍøÂçÍ¨ĞÅ  processing network data
+       //å¤„ç†ç½‘ç»œé€šä¿¡  processing network data
        //while(ScicRegs.SCIFFRX.bit.RXFFST != 0)
        while(ScibRegs.SCIFFRX.bit.RXFFST != 0)
        {
@@ -434,15 +434,15 @@ void main(void)
            case 2:
            	   if(msg_i == 4)
 			   {
-				   msg_state = 1;//ÊÕµ½ÓĞĞ§ÊäÈë
-				   //msg_rec[msg_i] = 0x00; // ¿Õ×Ö·û\0
+				   msg_state = 1;//æ”¶åˆ°æœ‰æ•ˆè¾“å…¥ Valid input data
+				   //msg_rec[msg_i] = 0x00; // ç©ºå­—ç¬¦\0 null character
 				   msg_rec[msg_i] = ReceivedCharc;
-				   msg_i = 0;//°ÑiÇåÁã
+				   msg_i = 0;//æŠŠiæ¸…é›¶ set i with 0
 			   }
 			   else
 			   {
-				   msg_state = 0;//Ã»ÓĞÊÕµ½ÓĞĞ§ÊäÈë
-				   msg_i = 0;//°ÑiÇåÁã
+				   msg_state = 0;//æ²¡æœ‰æ”¶åˆ°æœ‰æ•ˆè¾“å…¥ invalid inputs
+				   msg_i = 0;//æŠŠiæ¸…é›¶ set i with 0
 			   }
            	   break;
            }
