@@ -5,7 +5,7 @@ When you have a new ESP8266, you should configure it at first with **AT commands
 Firstly, you need a serial port debugging tool to configure, like this [one](https://github.com/Neutree/COMTool/releases).
 
 
-**These code for ESP8266**	
+**code for ESP8266**	
 ```
    //SCIC for debug ESP chip by computer
    // Connect to the Router
