@@ -44,3 +44,9 @@ GND | GND
 CH_PD | 3.3V
 VCC | 3.3V
 RX | TX
+
+## ESP8266 configuration 
+
+Firstly, we can the USB module to test ESP8266 and configure it.
+![image](https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3711389681,1822270054&fm=27&gp=0.jpg)
+The default baud rate of ESP is 115200.
