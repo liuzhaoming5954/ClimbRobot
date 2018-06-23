@@ -37,7 +37,7 @@ Connecting the ESP with computer via an USB-232 port, and then you can operate t
 # For ESP8266
 ## Pin Layout
 
-ESP | DSP
+ESP8266 | DSP
 ---|---
 TX | RX
 GND | GND
