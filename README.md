@@ -33,3 +33,14 @@ Connecting the ESP with computer via an USB-232 port, and then you can operate t
    scic_msg(msg);
    scib_msg(msg);
 ```
+
+# For ESP8266
+## Pin Layout
+
+ESP | DSP
+---|---
+TX | RX
+GND | GND
+CH_PD | 3.3V
+VCC | 3.3V
+RX | TX
