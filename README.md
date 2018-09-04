@@ -71,6 +71,6 @@ The default baud rate of ESP is 115200.
 ![Include Options](http://www.21ic.com/d/file/201601/c7eb07e699c54bb394a7fc358b5e75f2.png)
 
 Set file search path "F2837xS_common\cmd" and "F2837xS_headers\cmd" to installation directory of controlSUITE.
-|[file search path](http://www.21ic.com/d/file/201601/e7b0d28a352bc603ea7cfc8fcb68d932.png)
+![file search path](http://www.21ic.com/d/file/201601/e7b0d28a352bc603ea7cfc8fcb68d932.png)
 
 5.Build and download, test the code
