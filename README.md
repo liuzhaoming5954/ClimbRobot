@@ -67,5 +67,10 @@ The default baud rate of ESP is 115200.
 1.Install [CCS](http://www.ti.com/tool/CCSTUDIO) and [controlSUITE](http://www.ti.com/tool/CONTROLSUITE)
 2.Downdload code form [ClimbRobot](https://github.com/liuzhaoming5954/ClimbRobot)
 3.Import the project to CCS
-4.Configure the project. Right click on the name of project and choose "Properties", configure “Include Options”
-![image](http://www.21ic.com/d/file/201601/c7eb07e699c54bb394a7fc358b5e75f2.png)
+4.Configure the project. Right click on the name of project and choose "Properties", configure “Include Options”. Find out "F2837xS_common\include" and "F2837xS_headers\include" in your installation directory of controlSUITE.
+![Include Options](http://www.21ic.com/d/file/201601/c7eb07e699c54bb394a7fc358b5e75f2.png)
+
+Set file search path "F2837xS_common\cmd" and "F2837xS_headers\cmd" to installation directory of controlSUITE.
+|[file search path](http://www.21ic.com/d/file/201601/e7b0d28a352bc603ea7cfc8fcb68d932.png)
+
+5.Build and download, test the code
