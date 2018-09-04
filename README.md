@@ -53,7 +53,7 @@ Firstly, we can the USB module to test ESP8266 and configure it.
 
 The default baud rate of ESP is 115200.
 
-# Commutation protocol
+# Commutation Protocol
 	FORWARD =  0xFF, 0x00, 0x01, 0x00, 0xFE
 	BACKWARD = 0xFF, 0x00, 0x02, 0x00, 0xFE
 	STOP =     0xFF, 0x00, 0x00, 0x00, 0xFE
@@ -62,3 +62,10 @@ The default baud rate of ESP is 115200.
 	SUCTION_ON = 0xFF, 0x01, 0x01, 0x00, 0xFE
 	SUCTION_OFF = 0xFF, 0x01, 0x00, 0x00, 0xFE
 	SERVO =   0xFF, 0x04, 0x00, 0x01, 0xFE
+
+# Quick Start
+1.Install [CCS](http://www.ti.com/tool/CCSTUDIO) and [controlSUITE](http://www.ti.com/tool/CONTROLSUITE)
+2.Downdload code form [ClimbRobot](https://github.com/liuzhaoming5954/ClimbRobot)
+3.Import the project to CCS
+4.Configure the project. Right click on the name of project and choose "Properties", configure “Include Options”
+![image](http://www.21ic.com/d/file/201601/c7eb07e699c54bb394a7fc358b5e75f2.png)
