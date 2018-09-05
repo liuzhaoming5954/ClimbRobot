@@ -78,3 +78,25 @@ Set file search path "F2837xS_common\cmd" and "F2837xS_headers\cmd" to installat
 # JTAG emulator
 The JTAG emulator is [XDS100v2](https://www.digikey.com/products/en?mpart=TMDSEMU100V2U-14T&v=296)
 ![XDS100v2](https://media.digikey.com/Photos/Texas%20Instr%20Photos/TMDSEMU100V2U-14T_sml.jpg)
+
+# State Machine
+ state 0: moving state  
+ 	sub-state:
+	0: halt
+	1: move forward
+	2: move backward
+	4: turn left
+	8: turn right
+ state 1: suction motor operation
+ 	sub-state:
+	0: stop
+	1: start
+ state 4 : servo operation
+ 	sub-state:
+	0: middle
+	1: low
+	2: high
+ state 5 : setting speed
+ 	sub-state:
+	1: set wheel speed
+	2: set suction motor speed
