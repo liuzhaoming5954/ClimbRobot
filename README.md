@@ -74,3 +74,7 @@ Set file search path "F2837xS_common\cmd" and "F2837xS_headers\cmd" to installat
 ![file search path](http://www.21ic.com/d/file/201601/e7b0d28a352bc603ea7cfc8fcb68d932.png)
 
 5.Build and download, test the code
+
+# JTAG emulator
+The JTAG emulator is [XDS100v2](https://www.digikey.com/products/en?mpart=TMDSEMU100V2U-14T&v=296)
+![XDS100v2](https://media.digikey.com/Photos/Texas%20Instr%20Photos/TMDSEMU100V2U-14T_sml.jpg)
