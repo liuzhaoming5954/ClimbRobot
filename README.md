@@ -81,6 +81,7 @@ The JTAG emulator is [XDS100v2](https://www.digikey.com/products/en?mpart=TMDSEM
 
 # State Machine
 state 0: moving state     
+
 sub-state | operation
 ---|---
 0 | halt
@@ -91,20 +92,23 @@ sub-state | operation
  	   
 
 state 1: suction motor operation  
+
 sub-state | operation
 ---|---
 sub |state:
 0 | stop
 1 | start
 
-state 4 : servo operation    
+state 4 : servo operation      
+
 sub-state | operation
 ---|---
 0 | middle
 1 | low
 2 | high
 
-state 5 : setting speed      
+state 5 : setting speed        
+
 sub-state | operation
 ---|---
 1 | set wheel speed
